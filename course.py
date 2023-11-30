@@ -7,15 +7,17 @@ class Course:
         self.number = number
 
 class CourseInfo:
-    def __init__(self, course: Course, title: str):
+    def __init__(self, course: Course, title: str, description: str):
         self.course = course
         self.title = title
+        self.description = description
 
     def toJson(self):
         return {
             "subject": self.course.subject,
             "number": self.course.number,
-            "title": self.title
+            "title": self.title,
+            "description": self.description
         }
 
 class CourseGroup:

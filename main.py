@@ -25,8 +25,6 @@ def get_course_info(subject, number, period=get_current_period()):
     return json.loads(section_res.text)
 
 
-
-
 json_result = []
 
 for courseGroup in software_systems_requirements:
@@ -34,7 +32,9 @@ for courseGroup in software_systems_requirements:
     for course in courseGroup.courses:
         print("Fetching - ", course.subject, course.number)
         data = get_course_info(course.subject, course.number)
-        course_info = CourseInfo(course, data['info']['title'])
+        title = data['info']['title']
+        description = data['info']['description']
+        course_info = CourseInfo(course, title, description)
         course_info_list.append(course_info.toJson())
 
     json_result.append(

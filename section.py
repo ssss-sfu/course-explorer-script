@@ -30,62 +30,62 @@ class CourseSchedule:
 
 @dataclass
 class Info:
+    name: str
+    title: str
+    description: str
+    term: str
+    dept: str
+    number: str
+    section: str
+    prerequisites: str
+    corequisites: str
     educationalGoals: str
     notes: str
     deliveryMethod: str
-    description: str
-    section: str
     units: str
-    title: str
     type: str
     classNumber: str
     departmentalUgradNotes: str
-    prerequisites: str
-    number: str
     requiredReadingNotes: str
     registrarNotes: str
     outlinePath: str
-    term: str
     requirements: str
     gradingNotes: str
-    corequisites: str
-    dept: str
     degreeLevel: str
     specialTopic: str
     courseDetails: str
     materials: str
-    name: str
     designation: str
 
     @staticmethod
     def from_dict(obj: Any) -> 'Info':
+        _name = str(obj.get("name"))
+        _title = str(obj.get("title"))
+        _description = str(obj.get("description"))
+        _term = str(obj.get("term"))
+        _dept = str(obj.get("dept"))
+        _number = str(obj.get("number"))
+        _section = str(obj.get("section"))
+        _prerequisites = str(obj.get("prerequisites"))
+        _corequisites = str(obj.get("corequisites"))
         _educationalGoals = str(obj.get("educationalGoals"))
         _notes = str(obj.get("notes"))
         _deliveryMethod = str(obj.get("deliveryMethod"))
-        _description = str(obj.get("description"))
-        _section = str(obj.get("section"))
         _units = str(obj.get("units"))
-        _title = str(obj.get("title"))
         _type = str(obj.get("type"))
         _classNumber = str(obj.get("classNumber"))
         _departmentalUgradNotes = str(obj.get("departmentalUgradNotes"))
-        _prerequisites = str(obj.get("prerequisites"))
-        _number = str(obj.get("number"))
         _requiredReadingNotes = str(obj.get("requiredReadingNotes"))
         _registrarNotes = str(obj.get("registrarNotes"))
         _outlinePath = str(obj.get("outlinePath"))
-        _term = str(obj.get("term"))
         _requirements = str(obj.get("requirements"))
         _gradingNotes = str(obj.get("gradingNotes"))
-        _corequisites = str(obj.get("corequisites"))
-        _dept = str(obj.get("dept"))
         _degreeLevel = str(obj.get("degreeLevel"))
         _specialTopic = str(obj.get("specialTopic"))
         _courseDetails = str(obj.get("courseDetails"))
         _materials = str(obj.get("materials"))
-        _name = str(obj.get("name"))
         _designation = str(obj.get("designation"))
-        return Info(_educationalGoals, _notes, _deliveryMethod, _description, _section, _units, _title, _type, _classNumber, _departmentalUgradNotes, _prerequisites, _number, _requiredReadingNotes, _registrarNotes, _outlinePath, _term, _requirements, _gradingNotes, _corequisites, _dept, _degreeLevel, _specialTopic, _courseDetails, _materials, _name, _designation)
+        return Info(_name, _title, _description, _term, _dept, _number, _section, _prerequisites, _corequisites, _educationalGoals, _notes, _deliveryMethod, _units, _type, _classNumber, _departmentalUgradNotes, _requiredReadingNotes, _registrarNotes, _outlinePath, _requirements, _gradingNotes, _degreeLevel, _specialTopic, _courseDetails, _materials, _designation)
 
 
 @dataclass

@@ -1,15 +1,17 @@
 from term import get_current_term
 from course import Course, CourseInfo, CourseGroup
 from sosy_requirements import software_systems_requirements
+from section import Section
 from typing import List
 import requests
 import json
+import dataclasses
 
 BASE_URL = "http://www.sfu.ca/bin/wcm/course-outlines"
 RESULT_FILE_PATH = "result/courses.json"
 
 
-def get_course_info(course: Course, term=get_current_term()):
+def get_course_info(course: Course, term=get_current_term()) -> Section:
     season = term.season.value
     year = term.year
     course_url = f"{BASE_URL}?{year}/{season}/{course.subject}/{course.number}"
@@ -23,7 +25,8 @@ def get_course_info(course: Course, term=get_current_term()):
     section = course_json[0]['value']
     section_url = f"{course_url}/{section}"
     section_res = requests.get(section_url)
-    return json.loads(section_res.text)
+    section_json = json.loads(section_res.text)
+    return Section.from_dict(section_json)
 
 
 json_result = []
@@ -32,11 +35,8 @@ for courseGroup in software_systems_requirements:
     course_info_list: List[CourseInfo] = []
     for course in courseGroup.courses:
         print("Fetching - ", course.subject, course.number)
-        data = get_course_info(course)
-        title = data['info']['title']
-        description = data['info']['description']
-        course_info = CourseInfo(course, title, description)
-        course_info_list.append(course_info.toJson())
+        section = get_course_info(course)
+        course_info_list.append(dataclasses.asdict(section))
 
     json_result.append(
         {
@@ -45,7 +45,9 @@ for courseGroup in software_systems_requirements:
         }
     )
 
-print("JSON RESULT", json_result)
+print("Json result filled successfully!")
 
 with open(RESULT_FILE_PATH, 'w') as f:
     json.dump(json_result, f, indent=4)
+
+print(f"Successfully written to {RESULT_FILE_PATH}")

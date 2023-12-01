@@ -1,4 +1,4 @@
-from term import get_current_period
+from term import get_current_term
 from course import Course, CourseInfo, CourseGroup
 from sosy_requirements import software_systems_requirements
 from typing import List
@@ -9,14 +9,14 @@ BASE_URL = "http://www.sfu.ca/bin/wcm/course-outlines"
 RESULT_FILE_PATH = "result/courses.json"
 
 
-def get_course_info(course: Course, period=get_current_period()):
-    term = period.term.value
-    year = period.year
-    course_url = f"{BASE_URL}?{year}/{term}/{course.subject}/{course.number}"
+def get_course_info(course: Course, term=get_current_term()):
+    season = term.season.value
+    year = term.year
+    course_url = f"{BASE_URL}?{year}/{season}/{course.subject}/{course.number}"
     course_res = requests.get(course_url)
     if (course_res.status_code == 404):
-        # Recurse to previous term until we get info
-        return get_course_info(course.subject, course.number, period.previous_period())
+        # Recurse to previous season until we get info
+        return get_course_info(course, term.previous_term())
 
     # Status Code here is 200 OK
     course_json = json.loads(course_res.text)

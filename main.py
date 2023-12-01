@@ -48,4 +48,4 @@ for courseGroup in software_systems_requirements:
 print("JSON RESULT", json_result)
 
 with open(RESULT_FILE_PATH, 'w') as f:
-    json.dump(json_result, f)
+    json.dump(json_result, f, indent=4)

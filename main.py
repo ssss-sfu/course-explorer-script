@@ -1,4 +1,4 @@
-from period import Term, Period, get_current_period
+from term import get_current_period
 from course import Course, CourseInfo, CourseGroup
 from sosy_requirements import software_systems_requirements
 from typing import List
@@ -8,14 +8,15 @@ import json
 BASE_URL = "http://www.sfu.ca/bin/wcm/course-outlines"
 RESULT_FILE_PATH = "result/courses.json"
 
-def get_course_info(subject, number, period=get_current_period()):
+
+def get_course_info(course: Course, period=get_current_period()):
     term = period.term.value
     year = period.year
-    course_url = f"{BASE_URL}?{year}/{term}/{subject}/{number}"
+    course_url = f"{BASE_URL}?{year}/{term}/{course.subject}/{course.number}"
     course_res = requests.get(course_url)
     if (course_res.status_code == 404):
         # Recurse to previous term until we get info
-        return get_course_info(subject, number, period.previous_period())
+        return get_course_info(course.subject, course.number, period.previous_period())
 
     # Status Code here is 200 OK
     course_json = json.loads(course_res.text)
@@ -31,7 +32,7 @@ for courseGroup in software_systems_requirements:
     course_info_list: List[CourseInfo] = []
     for course in courseGroup.courses:
         print("Fetching - ", course.subject, course.number)
-        data = get_course_info(course.subject, course.number)
+        data = get_course_info(course)
         title = data['info']['title']
         description = data['info']['description']
         course_info = CourseInfo(course, title, description)

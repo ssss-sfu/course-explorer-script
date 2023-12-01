@@ -1,8 +1,7 @@
 from term import get_current_term
-from course import Course, CourseInfo, CourseGroup
+from course import Course
 from sosy_requirements import software_systems_requirements
 from section import Section
-from typing import List
 import requests
 import json
 import dataclasses
@@ -32,7 +31,7 @@ def get_course_info(course: Course, term=get_current_term()) -> Section:
 json_result = []
 
 for courseGroup in software_systems_requirements:
-    course_info_list: List[CourseInfo] = []
+    course_info_list = []
     for course in courseGroup.courses:
         print("Fetching - ", course.subject, course.number)
         section = get_course_info(course)

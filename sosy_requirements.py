@@ -1,4 +1,4 @@
-from course import Course, CourseInfo, CourseGroup
+from course import Course, CourseGroup
 
 # List of lower-division cores
 lower_division_core = CourseGroup("Lower Divison Core", [

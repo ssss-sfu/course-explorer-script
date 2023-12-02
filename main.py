@@ -1,3 +1,4 @@
+from typing import List
 from term import get_current_term
 from course import Course
 from sosy_requirements import software_systems_requirements
@@ -10,22 +11,25 @@ BASE_URL = "http://www.sfu.ca/bin/wcm/course-outlines"
 RESULT_FILE_PATH = "result/courses.json"
 
 
-def get_course_info(course: Course, term=get_current_term()) -> Section:
+def get_all_sections_info(course: Course, term=get_current_term()) -> List[Section]:
     season = term.season.value
     year = term.year
     course_url = f"{BASE_URL}?{year}/{season}/{course.subject}/{course.number}"
     course_res = requests.get(course_url)
     if (course_res.status_code == 404):
         # Recurse to previous season until we get info
-        return get_course_info(course, term.previous_term())
+        return get_all_sections_info(course, term.previous_term())
 
     # Status Code here is 200 OK
     course_json = json.loads(course_res.text)
-    section = course_json[0]['value']
-    section_url = f"{course_url}/{section}"
-    section_res = requests.get(section_url)
-    section_json = json.loads(section_res.text)
-    return Section.from_dict(section_json)
+    sections: List[Section] = []
+    for section in course_json:
+        section_value = section['value']
+        section_url = f"{course_url}/{section_value}"
+        section_res = requests.get(section_url)
+        section_json = json.loads(section_res.text)
+        sections.append(Section.from_dict(section_json))
+    return sections
 
 
 json_result = []
@@ -34,8 +38,11 @@ for courseGroup in software_systems_requirements:
     course_info_list = []
     for course in courseGroup.courses:
         print("Fetching - ", course.subject, course.number)
-        section = get_course_info(course)
-        course_info_list.append(dataclasses.asdict(section))
+        sections = get_all_sections_info(course)
+        print("Success! section length -", len(sections), "\n")
+        course_info_list.append([dataclasses.asdict(section) for section in sections])
+    
+    # print("LENGTH" ,course.subject, course.number, course_info_list.length);
 
     json_result.append(
         {

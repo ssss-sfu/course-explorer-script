@@ -1,6 +1,6 @@
 from typing import List
 from term import get_current_term
-from course import CourseName
+from course_group import CourseName
 from sosy_requirements import software_systems_requirements
 from section import Section, Course, CourseInfo
 import requests
@@ -50,8 +50,6 @@ for courseGroup in software_systems_requirements:
         print("Fetching - ", course.subject, course.number)
         course_info = get_course_info(course)
         course_info_list.append(dataclasses.asdict(course_info))
-    
-    # print("LENGTH" ,course.subject, course.number, course_info_list.length);
 
     json_result.append(
         {

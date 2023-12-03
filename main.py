@@ -1,8 +1,8 @@
 from typing import List
 from term import get_current_term
-from course import Course
+from course import CourseName
 from sosy_requirements import software_systems_requirements
-from section import Section
+from section import Section, Course, CourseInfo
 import requests
 import json
 import dataclasses
@@ -11,25 +11,35 @@ BASE_URL = "http://www.sfu.ca/bin/wcm/course-outlines"
 RESULT_FILE_PATH = "result/courses.json"
 
 
-def get_all_sections_info(course: Course, term=get_current_term()) -> List[Section]:
+def get_course_info(course: CourseName, term=get_current_term()) -> Course:
     season = term.season.value
     year = term.year
     course_url = f"{BASE_URL}?{year}/{season}/{course.subject}/{course.number}"
     course_res = requests.get(course_url)
     if (course_res.status_code == 404):
         # Recurse to previous season until we get info
-        return get_all_sections_info(course, term.previous_term())
+        return get_course_info(course, term.previous_term())
 
     # Status Code here is 200 OK
-    course_json = json.loads(course_res.text)
-    sections: List[Section] = []
-    for section in course_json:
-        section_value = section['value']
+    course_json: List[any] = json.loads(course_res.text)
+    first_section_value = course_json[0]['value']
+    first_section_url = f"{course_url}/{first_section_value}"
+    first_section_res = requests.get(first_section_url)
+    first_section_json = json.loads(first_section_res.text)
+    course_info: CourseInfo = CourseInfo.from_dict(first_section_json['info'])
+    first_section = Section.from_dict(first_section_json)
+    
+    sections: List[Section] = [first_section]
+
+    for index in range(1, len(course_json)):
+        section_value = course_json[index]['value']
         section_url = f"{course_url}/{section_value}"
         section_res = requests.get(section_url)
         section_json = json.loads(section_res.text)
         sections.append(Section.from_dict(section_json))
-    return sections
+
+    course = Course(course_info, sections)
+    return course
 
 
 json_result = []
@@ -38,9 +48,8 @@ for courseGroup in software_systems_requirements:
     course_info_list = []
     for course in courseGroup.courses:
         print("Fetching - ", course.subject, course.number)
-        sections = get_all_sections_info(course)
-        print("Success! section length -", len(sections), "\n")
-        course_info_list.append([dataclasses.asdict(section) for section in sections])
+        course_info = get_course_info(course)
+        course_info_list.append(dataclasses.asdict(course_info))
     
     # print("LENGTH" ,course.subject, course.number, course_info_list.length);
 

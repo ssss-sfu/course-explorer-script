@@ -1,58 +1,58 @@
-from course import Course, CourseGroup
+from course import CourseName, CourseGroup
 
 # List of lower-division cores
 lower_division_core = CourseGroup("Lower Divison Core", [
-    Course("CMPT", "105W"),
-    Course("CMPT", "130"),
-    Course("CMPT", "135"),
-    Course("CMPT", "210"),
-    Course("CMPT", "213"),
-    Course("CMPT", "225"),
-    Course("CMPT", "276"),
-    Course("CMPT", "295"),
-    Course("MACM", "101"),
-    Course("MSE", "110"),
-    Course("STAT", "271"),
-    Course("MATH", "150"),
-    Course("MATH", "151"),
-    Course("MATH", "152"),
-    Course("MATH", "232"),
+    CourseName("CMPT", "105W"),
+    CourseName("CMPT", "130"),
+    CourseName("CMPT", "135"),
+    CourseName("CMPT", "210"),
+    CourseName("CMPT", "213"),
+    CourseName("CMPT", "225"),
+    CourseName("CMPT", "276"),
+    CourseName("CMPT", "295"),
+    CourseName("MACM", "101"),
+    CourseName("MSE", "110"),
+    CourseName("STAT", "271"),
+    CourseName("MATH", "150"),
+    CourseName("MATH", "151"),
+    CourseName("MATH", "152"),
+    CourseName("MATH", "232"),
 ]
 )
 # Upper Division Core Requirements
 upper_division_core = CourseGroup("Upper Divison Core", [
-    Course("CMPT", "307"),
-    Course("CMPT", "376W"),
+    CourseName("CMPT", "307"),
+    CourseName("CMPT", "376W"),
 ]
 )
 
 # Systems Requirements
 systems_requirements = CourseGroup("Systems Requirements", [
-    Course("CMPT", "300"),
-    Course("CMPT", "354"),
-    Course("CMPT", "371"),
-    Course("CMPT", "372"),
-    Course("CMPT", "431"),
-    Course("CMPT", "433"),
-    Course("CMPT", "454"),
-    Course("CMPT", "471"),
+    CourseName("CMPT", "300"),
+    CourseName("CMPT", "354"),
+    CourseName("CMPT", "371"),
+    CourseName("CMPT", "372"),
+    CourseName("CMPT", "431"),
+    CourseName("CMPT", "433"),
+    CourseName("CMPT", "454"),
+    CourseName("CMPT", "471"),
 ])
 
 # Software Engineering Requirements
 software_engineering_requirements = CourseGroup("Software Engineering Requirements", [
-    Course("CMPT", "373"),
-    Course("CMPT", "473"),
-    Course("CMPT", "379"),
-    Course("CMPT", "383"),
-    Course("CMPT", "384"),
-    Course("CMPT", "474"),
-    Course("CMPT", "477"),
+    CourseName("CMPT", "373"),
+    CourseName("CMPT", "473"),
+    CourseName("CMPT", "379"),
+    CourseName("CMPT", "383"),
+    CourseName("CMPT", "384"),
+    CourseName("CMPT", "474"),
+    CourseName("CMPT", "477"),
 ])
 
 # Capstone Project Requirement
 capstone_project = CourseGroup("Capstone Project Requirements", [
-    Course("CMPT", "494"),
-    Course("CMPT", "495"),
+    CourseName("CMPT", "494"),
+    CourseName("CMPT", "495"),
 ])
 
 software_systems_requirements = [lower_division_core, upper_division_core, systems_requirements, software_engineering_requirements, capstone_project]

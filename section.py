@@ -1,7 +1,7 @@
+import json
 from typing import List
 from typing import Any
 from dataclasses import dataclass
-
 
 @dataclass
 class CourseSchedule:
@@ -26,24 +26,33 @@ class CourseSchedule:
         _startDate = str(obj.get("startDate"))
         return CourseSchedule(_endDate, _campus, _days, _sectionCode, _startTime, _isExam, _endTime, _startDate)
 
+@dataclass
+class SectionInfo:
+    section: str
+    classNumber: str
+    type: str
+
+    @staticmethod
+    def from_dict(obj: Any) -> 'Info':
+        _section = str(obj.get("section"))
+        _classNumber = str(obj.get("classNumber"))
+        _type = str(obj.get("type"))
+        return SectionInfo(_section, _classNumber, _type)
 
 @dataclass
-class Info:
+class CourseInfo:
     name: str
     title: str
     description: str
     term: str
     dept: str
     number: str
-    section: str
     prerequisites: str
     corequisites: str
     educationalGoals: str
     notes: str
     deliveryMethod: str
     units: str
-    type: str
-    classNumber: str
     departmentalUgradNotes: str
     requiredReadingNotes: str
     registrarNotes: str
@@ -57,22 +66,19 @@ class Info:
     designation: str
 
     @staticmethod
-    def from_dict(obj: Any) -> 'Info':
+    def from_dict(obj: Any) -> 'CourseInfo':
         _name = str(obj.get("name"))
         _title = str(obj.get("title"))
         _description = str(obj.get("description"))
         _term = str(obj.get("term"))
         _dept = str(obj.get("dept"))
         _number = str(obj.get("number"))
-        _section = str(obj.get("section"))
         _prerequisites = str(obj.get("prerequisites"))
         _corequisites = str(obj.get("corequisites"))
         _educationalGoals = str(obj.get("educationalGoals"))
         _notes = str(obj.get("notes"))
         _deliveryMethod = str(obj.get("deliveryMethod"))
         _units = str(obj.get("units"))
-        _type = str(obj.get("type"))
-        _classNumber = str(obj.get("classNumber"))
         _departmentalUgradNotes = str(obj.get("departmentalUgradNotes"))
         _requiredReadingNotes = str(obj.get("requiredReadingNotes"))
         _registrarNotes = str(obj.get("registrarNotes"))
@@ -84,7 +90,7 @@ class Info:
         _courseDetails = str(obj.get("courseDetails"))
         _materials = str(obj.get("materials"))
         _designation = str(obj.get("designation"))
-        return Info(_name, _title, _description, _term, _dept, _number, _section, _prerequisites, _corequisites, _educationalGoals, _notes, _deliveryMethod, _units, _type, _classNumber, _departmentalUgradNotes, _requiredReadingNotes, _registrarNotes, _outlinePath, _requirements, _gradingNotes, _degreeLevel, _specialTopic, _courseDetails, _materials, _designation)
+        return CourseInfo(_name, _title, _description, _term, _dept, _number, _prerequisites, _corequisites, _educationalGoals, _notes, _deliveryMethod, _units, _departmentalUgradNotes, _requiredReadingNotes, _registrarNotes, _outlinePath, _requirements, _gradingNotes, _degreeLevel, _specialTopic, _courseDetails, _materials, _designation)
 
 
 @dataclass
@@ -127,14 +133,14 @@ class RequiredText:
 
 @dataclass
 class Section:
-    info: Info
+    info: SectionInfo
     instructor: List[Instructor]
     courseSchedule: List[CourseSchedule]
     requiredText: List[RequiredText]
 
     @staticmethod
     def from_dict(obj: Any) -> 'Section':
-        _info = Info.from_dict(obj.get("info"))
+        _info = SectionInfo.from_dict(obj.get("info"))
         _instructor = [Instructor.from_dict(y) for y in obj.get(
             "instructor")] if obj.get("instructor") is not None else []
         _courseSchedule = [CourseSchedule.from_dict(y) for y in obj.get(
@@ -143,6 +149,11 @@ class Section:
             "requiredText")] if obj.get("requiredText") is not None else []
         return Section(_info, _instructor, _courseSchedule, _requiredText)
 
-# Example Usage
-# jsonstring = json.loads(myjsonstring)
-# root = Root.from_dict(jsonstring)
+@dataclass
+class Course:
+    info: CourseInfo
+    sections: List[Section]
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)

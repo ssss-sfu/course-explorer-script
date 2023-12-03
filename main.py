@@ -2,7 +2,7 @@ from typing import List
 from term import get_current_term
 from course_group import CourseName
 from sosy_requirements import software_systems_requirements
-from section import Section, Course, CourseInfo
+from course import Section, Course, CourseInfo
 import requests
 import json
 import dataclasses

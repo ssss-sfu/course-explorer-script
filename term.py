@@ -45,6 +45,9 @@ class Term:
         next_year = self.year + 1 if next_season == Season.SPRING else self.year
 
         return Term(next_season, next_year)
+    
+    def __str__(self):
+        return f"{self.season.value.capitalize()} {self.year}"
 
 
 def get_current_term():

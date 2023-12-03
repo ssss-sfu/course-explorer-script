@@ -60,7 +60,6 @@ class CourseInfo:
     number: str
     title: str
     description: str
-    term: str
     prerequisites: str
     corequisites: str
     notes: str
@@ -73,13 +72,12 @@ class CourseInfo:
         _number = str(obj.get("number"))
         _title = str(obj.get("title"))
         _description = str(obj.get("description"))
-        _term = str(obj.get("term"))
         _prerequisites = str(obj.get("prerequisites"))
         _corequisites = str(obj.get("corequisites"))
         _notes = str(obj.get("notes"))
         _deliveryMethod = str(obj.get("deliveryMethod"))
         _units = str(obj.get("units"))
-        return CourseInfo( _dept, _number, _title, _description, _term, _prerequisites, _corequisites, _notes, _deliveryMethod, _units)
+        return CourseInfo( _dept, _number, _title, _description, _prerequisites, _corequisites, _notes, _deliveryMethod, _units)
 
 @dataclass
 class Section:
@@ -94,6 +92,12 @@ class Section:
         return Section(_info, _courseSchedule)
 
 @dataclass
+class SectionsPerTerm:
+    term: str
+    sections: List[Section]
+
+@dataclass
 class Course:
     info: CourseInfo
-    sections: List[Section]
+    future_sections: SectionsPerTerm
+    last_sections: SectionsPerTerm

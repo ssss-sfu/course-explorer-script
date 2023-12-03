@@ -3,7 +3,7 @@ from typing import List
 from typing import Any
 from dataclasses import dataclass
 
-def convert_to_days_list(day_str: str) -> dict[str, str]: 
+def convert_to_cleaned_days_list(day_str: str) -> dict[str, str]: 
     day_map = {
         "Mo": "Monday",
         "Tu": "Tuesday",
@@ -18,7 +18,6 @@ def convert_to_days_list(day_str: str) -> dict[str, str]:
 
 @dataclass
 class CourseSchedule:
-    campus: str
     days: List[str]
     sectionCode: str
     startTime: str
@@ -26,12 +25,11 @@ class CourseSchedule:
 
     @staticmethod
     def from_dict(obj: Any) -> 'CourseSchedule':
-        _campus = str(obj.get("campus"))
-        _days = convert_to_days_list(str(obj.get("days")))
+        _days = convert_to_cleaned_days_list(str(obj.get("days")))
         _sectionCode = str(obj.get("sectionCode"))
         _startTime = str(obj.get("startTime"))
         _endTime = str(obj.get("endTime"))
-        return CourseSchedule(_campus, _days, _sectionCode, _startTime, _endTime)
+        return CourseSchedule(_days, _sectionCode, _startTime, _endTime)
 
 @dataclass
 class SectionInfo:

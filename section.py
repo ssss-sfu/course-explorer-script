@@ -3,10 +3,23 @@ from typing import List
 from typing import Any
 from dataclasses import dataclass
 
+def convert_to_days_list(day_str: str) -> dict[str, str]: 
+    day_map = {
+        "Mo": "Monday",
+        "Tu": "Tuesday",
+        "We": "Wednesday",
+        "Th": "Thursday",
+        "Fr": "Friday"
+    }
+    raw_day_list = day_str.split(", ")
+    day_list = raw_day_list if raw_day_list[0] != "" else []
+    days_mapped = list(map(lambda str: day_map[str], day_list))
+    return days_mapped
+
 @dataclass
 class CourseSchedule:
     campus: str
-    days: str
+    days: List[str]
     sectionCode: str
     startTime: str
     endTime: str
@@ -14,7 +27,7 @@ class CourseSchedule:
     @staticmethod
     def from_dict(obj: Any) -> 'CourseSchedule':
         _campus = str(obj.get("campus"))
-        _days = str(obj.get("days"))
+        _days = convert_to_days_list(str(obj.get("days")))
         _sectionCode = str(obj.get("sectionCode"))
         _startTime = str(obj.get("startTime"))
         _endTime = str(obj.get("endTime"))
@@ -25,13 +38,23 @@ class SectionInfo:
     section: str
     classNumber: str
     type: str
+    campus: str
+    instructorNames: List[str]
 
     @staticmethod
-    def from_dict(obj: Any) -> 'Info':
-        _section = str(obj.get("section"))
-        _classNumber = str(obj.get("classNumber"))
-        _type = str(obj.get("type"))
-        return SectionInfo(_section, _classNumber, _type)
+    def from_dict(obj: Any) -> 'SectionInfo':
+        info = obj.get("info")
+        _section = str(info.get("section")) if info is not None else ""
+        _classNumber = str(info.get("classNumber")) if info is not None else ""
+        _type = str(info.get("type")) if info is not None else ""
+
+        course_schedule = obj.get("courseSchedule")[0] if isinstance(obj.get("courseSchedule"), list) else None
+        _campus = str(course_schedule.get("campus")) if course_schedule is not None else "" 
+        ## campus on 1 section is always the same, so move it to sectionInfo from ClassSchedule
+
+        instructors = obj.get("instructor")
+        _instructorNames = [str(instructor.get("name")) for instructor in instructors] if instructors is not None else []
+        return SectionInfo(_section, _classNumber, _type, _campus, _instructorNames)
 
 @dataclass
 class CourseInfo:
@@ -63,17 +86,14 @@ class CourseInfo:
 @dataclass
 class Section:
     info: SectionInfo
-    instructorNames: List[str]
     courseSchedule: List[CourseSchedule]
 
     @staticmethod
     def from_dict(obj: Any) -> 'Section':
-        _info = SectionInfo.from_dict(obj.get("info"))
-        _instructorNames = [instructor.get("name") for instructor in obj.get(
-            "instructor")] if obj.get("instructor") is not None else []
+        _info = SectionInfo.from_dict(obj)
         _courseSchedule = [CourseSchedule.from_dict(y) for y in obj.get(
             "courseSchedule")] if obj.get("courseSchedule") is not None else []
-        return Section(_info, _instructorNames, _courseSchedule)
+        return Section(_info, _courseSchedule)
 
 @dataclass
 class Course:

@@ -35,12 +35,11 @@ class SectionInfo:
 
 @dataclass
 class CourseInfo:
-    name: str
+    dept: str
+    number: str
     title: str
     description: str
     term: str
-    dept: str
-    number: str
     prerequisites: str
     corequisites: str
     notes: str
@@ -49,28 +48,17 @@ class CourseInfo:
 
     @staticmethod
     def from_dict(obj: Any) -> 'CourseInfo':
-        _name = str(obj.get("name"))
+        _dept = str(obj.get("dept"))
+        _number = str(obj.get("number"))
         _title = str(obj.get("title"))
         _description = str(obj.get("description"))
         _term = str(obj.get("term"))
-        _dept = str(obj.get("dept"))
-        _number = str(obj.get("number"))
         _prerequisites = str(obj.get("prerequisites"))
         _corequisites = str(obj.get("corequisites"))
         _notes = str(obj.get("notes"))
         _deliveryMethod = str(obj.get("deliveryMethod"))
         _units = str(obj.get("units"))
-        return CourseInfo(_name, _title, _description, _term, _dept, _number, _prerequisites, _corequisites, _notes, _deliveryMethod, _units)
-
-@dataclass
-class RequiredText:
-    details: str
-
-    @staticmethod
-    def from_dict(obj: Any) -> 'RequiredText':
-        _details = str(obj.get("details"))
-        return RequiredText(_details)
-
+        return CourseInfo( _dept, _number, _title, _description, _term, _prerequisites, _corequisites, _notes, _deliveryMethod, _units)
 
 @dataclass
 class Section:

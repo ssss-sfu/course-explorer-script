@@ -45,16 +45,16 @@ def get_course_info(course: CourseName, term=get_current_term()) -> Course:
 json_result = []
 
 for courseGroup in software_systems_requirements:
-    course_info_list = []
+    courses = []
     for course in courseGroup.courses:
         print("Fetching - ", course.subject, course.number)
         course_info = get_course_info(course)
-        course_info_list.append(dataclasses.asdict(course_info))
+        courses.append(dataclasses.asdict(course_info))
 
     json_result.append(
         {
             "requirement": courseGroup.name,
-            "courses": course_info_list
+            "courses": courses
         }
     )
 
@@ -63,4 +63,4 @@ print("Json result filled successfully!")
 with open(RESULT_FILE_PATH, 'w') as f:
     json.dump(json_result, f, indent=4)
 
-print(f"Successfully written to {RESULT_FILE_PATH}")
+print(f"Successfully written to {RESULT_FILE_PATH}!")

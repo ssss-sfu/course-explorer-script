@@ -55,4 +55,43 @@ capstone_project = CourseGroup("Capstone Project Requirements", [
     CourseName("CMPT", "495"),
 ])
 
-software_systems_requirements = [lower_division_core, upper_division_core, systems_requirements, software_engineering_requirements, capstone_project]
+other_cmpt_courses = CourseGroup("Other CMPT Courses", [
+    CourseName("CMPT", "120"),
+    CourseName("CMPT", "125"),
+    # CourseName("CMPT", "263"),
+    CourseName("CMPT", "276"),
+    CourseName("CMPT", "305"),
+    CourseName("CMPT", "308"),
+    CourseName("CMPT", "310"),
+    CourseName("CMPT", "340"),
+    CourseName("CMPT", "353"),
+    CourseName("CMPT", "361"),
+    CourseName("CMPT", "362"),
+    CourseName("CMPT", "363"),
+    CourseName("CMPT", "365"),
+    CourseName("CMPT", "403"),
+    CourseName("CMPT", "404"),
+    CourseName("CMPT", "405"),
+    CourseName("CMPT", "410"),
+    CourseName("CMPT", "411"),
+    CourseName("CMPT", "412"),
+    CourseName("CMPT", "413"),
+    CourseName("CMPT", "417"),
+    # CourseName("CMPT", "420"),
+    CourseName("CMPT", "441"),
+    CourseName("CMPT", "450"),
+    CourseName("CMPT", "410"),
+    CourseName("CMPT", "411"),
+    CourseName("CMPT", "412"),
+    CourseName("CMPT", "413"),
+    CourseName("CMPT", "417"),
+    CourseName("CMPT", "461"),
+    CourseName("CMPT", "464"),
+    CourseName("CMPT", "466"),
+    # CourseName("CMPT", "467"),
+    CourseName("CMPT", "475"),
+    # CourseName("CMPT", "476")
+    ])
+
+software_systems_requirements = [lower_division_core, upper_division_core,
+                                 systems_requirements, software_engineering_requirements, capstone_project, other_cmpt_courses]

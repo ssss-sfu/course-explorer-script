@@ -11,14 +11,13 @@ BASE_URL = "http://www.sfu.ca/bin/wcm/course-outlines"
 RESULT_FILE_PATH = "../../public/jsons/courses.json"
 
 def get_course_info(course: CourseName, term=get_current_term()) -> CourseInfo:
-    term = get_current_term()
     season = term.season.value
     year = term.year
     course_url = f"{BASE_URL}?{year}/{season}/{course.subject}/{course.number}"
     course_res = requests.get(course_url)
     if (course_res.status_code == 404):
         # Recurse to previous season until we get info
-        return get_sections_info(course, term.previous_term())
+        return get_course_info(course, term.previous_term())
 
     # Status Code here is 200 OK
     course_json: List[any] = json.loads(course_res.text)

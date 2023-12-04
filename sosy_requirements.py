@@ -55,4 +55,4 @@ capstone_project = CourseGroup("Capstone Project Requirements", [
     CourseName("CMPT", "495"),
 ])
 
-software_systems_requirements = [CourseGroup("Lower Divison Core", [CourseName("CMPT", "130"), CourseName("CMPT", "135")])]
+software_systems_requirements = [lower_division_core, upper_division_core, systems_requirements, software_engineering_requirements, capstone_project]

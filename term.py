@@ -63,3 +63,6 @@ def get_current_term():
     current_year = current_datetime.year
 
     return Term(current_season, current_year)
+
+def get_next_term():
+    return get_current_term().next_term()

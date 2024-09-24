@@ -11,3 +11,5 @@ The JSON data will be used by [sfussss.org](https://www.sfussss.org/) for its co
 1. Install python3
 2. Run `python3 main.py`
 3. See it generates `courses.json` in `result` directory
+
+Latest generated `courses.json` can be viewed at https://github.com/ssss-sfu/ssss-sfu.github.io/blob/master/public/jsons/courses.json

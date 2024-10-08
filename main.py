@@ -77,6 +77,6 @@ for courseGroup in software_systems_requirements:
 print("Json result filled successfully!")
 
 with open(RESULT_FILE_PATH, 'w') as f:
-    json.dump(json_result, f, indent=4)
+    json.dump(json_result, f)
 
 print(f"Successfully written to {RESULT_FILE_PATH}!")

@@ -9,7 +9,7 @@ import json
 import dataclasses
 
 BASE_URL = "http://www.sfu.ca/bin/wcm/course-outlines"
-RESULT_FILE_PATH = "../../public/jsons/courses.json"
+RESULT_FILE_PATH = "./result/courses.json"
 
 def get_course_info(course: CourseName, term=get_current_term()) -> CourseInfo:
     season = term.season.value

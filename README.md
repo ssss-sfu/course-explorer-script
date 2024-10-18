@@ -12,4 +12,6 @@ The JSON data will be used by [sfussss.org](https://www.sfussss.org/) for its co
 2. Run `python3 main.py`
 3. See it generates `courses.json` in `result` directory
 
-Latest generated `courses.json` can be viewed at https://github.com/ssss-sfu/ssss-sfu.github.io/blob/master/public/jsons/courses.json
+Latest generated `courses.json` can be viewed at https://raw.githubusercontent.com/ssss-sfu/course-explorer-script/main/result/courses.json
+
+JSON GET API ENDPOINT at https://raw.githubusercontent.com/ssss-sfu/course-explorer-script/main/result/courses.json

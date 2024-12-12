@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Set
 
 from term import get_current_term, get_next_term
 from course_group import CourseName
@@ -57,26 +57,66 @@ def get_course(course: CourseName, term=get_current_term()) -> Course:
     last_sections = get_sections_info(course, term)
     return Course(course_info, future_sections, last_sections)
 
+def get_all_included_cmpt_course_numbers() -> Set[str]:
+    course_numbers = set()
+    for courseGroup in software_systems_requirements:
+        for course in courseGroup.courses:
+            course_numbers.add(course.number)
+    return course_numbers
 
-json_result = []
+def get_all_cmpt_course_numbers() -> Set[Course]:
+    alreadyIncludedCourse = get_all_included_cmpt_course_numbers()
+    
+    result = set()
+    terms = ["spring", "summer", "fall"]
+    for term in terms:
+        url = f"{BASE_URL}?2024/{term}/cmpt"
+        res = requests.get(url)
+        if (res.status_code == 404):
+            continue
+        dept_json: List[any] = json.loads(res.text)
 
-for courseGroup in software_systems_requirements:
-    courses = []
-    for course in courseGroup.courses:
-        print("Fetching - ", course.subject, course.number)
-        course_info = get_course(course)
-        courses.append(dataclasses.asdict(course_info))
+        for course in dept_json:
+            course_number = course['value']
+            if course_number not in alreadyIncludedCourse:
+                result.add(course_number)
+    
+    result = list(result)
+    result.sort()
+    print(result)
+    return result
 
-    json_result.append(
-        {
-            "requirement": courseGroup.name,
-            "courses": courses
-        }
-    )
+if __name__ == "__main__":
+    json_result = []
 
-print("Json result filled successfully!")
+    for courseGroup in software_systems_requirements:
+        courses = []
+        for course in courseGroup.courses:
+            print("Fetching - ", course.subject, course.number)
+            course_info = get_course(course)
+            courses.append(dataclasses.asdict(course_info))
 
-with open(RESULT_FILE_PATH, 'w') as f:
-    json.dump(json_result, f)
+        json_result.append(
+            {
+                "requirement": courseGroup.name,
+                "courses": courses
+            }
+        )
+    
+    other_cmpt_courses = []
+    for course_number in get_all_cmpt_course_numbers():
+        print("Fetching - CMPT", course_number)
+        course_info = get_course(CourseName("CMPT", course_number))
+        other_cmpt_courses.append(dataclasses.asdict(course_info))
 
-print(f"Successfully written to {RESULT_FILE_PATH}!")
+    json_result.append({
+        "requirement": "Other CMPT Courses",
+        "courses": other_cmpt_courses
+    })
+
+    print("Json result filled successfully!")
+
+    with open(RESULT_FILE_PATH, 'w') as f:
+        json.dump(json_result, f)
+
+    print(f"Successfully written to {RESULT_FILE_PATH}!")

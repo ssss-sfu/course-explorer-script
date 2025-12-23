@@ -1,3 +1,5 @@
+update: tbh not really useful anymore, just use api.sfucourses.com
+
 # course-explorer-script
 
 ## Description
